@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load plotly_dash %}
+
+{% block content %}
+
+<div class="{% plotly_class name='example'%} card" style="height: 100%; width: 100%">
+{% plotly_app name='example' ratio=0.65%}
+</div>
+<br>
+<div class="card" style="height: 100%; width:100%">
+    {{ scatterplot | safe }}
+</div>
+
+{% endblock %}

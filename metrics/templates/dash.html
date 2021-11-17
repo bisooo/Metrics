@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load plotly_dash %}
+
+{% block title %} "METRICS" {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="{% plotly_class name='example'%} card" style="height: 100%; width: 100%">
+        {% plotly_app name='example' ratio=0.65%}
+    </div>
+    <br>
+    <div class="card" style="height: 100%; width:100%">
+        {{ scatterplot | safe }}
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+{% endblock javascripts %}

@@ -16,7 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from metrics.views import homepage, dashboard, profile, icons, login, notifications, tables, typography
+from metrics.views import homepage, dashboard, profile, icons, notifications, tables, typography
+from git.views import register, login, logout
 from metrics.visuals import example
 
 urlpatterns = [
@@ -28,6 +29,8 @@ urlpatterns = [
     path('tables/', tables, name='tables'),
     path('typography/', typography, name='typo'),
     path('login/', login, name='login'),
+    path('register/', register, name='register'),
+    path('logout/', logout, name='logout'),
 
     path('django_plotly_dash/', include('django_plotly_dash.urls')),
     path('admin/', admin.site.urls),

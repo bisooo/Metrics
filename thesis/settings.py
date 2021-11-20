@@ -39,10 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # METRICS
     'metrics',
     'django_plotly_dash.apps.DjangoPlotlyDashConfig',
     'channels',
     'channels_redis',
+    # GIT
+    'git',
+
 ]
 
 MIDDLEWARE = [
@@ -159,3 +163,6 @@ PLOTLY_COMPONENTS = [
     'dash_renderer',
     'dpd_components',
 ]
+
+# OVERRIDE CURRENT DJANGO BASE USER MODEL
+AUTH_USER_MODEL = 'git.User'

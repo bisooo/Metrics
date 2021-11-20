@@ -10,7 +10,7 @@ app = DjangoDash('example', external_stylesheets=external_stylesheets)
 
 
 app.layout = html.Div([
-    html.H5('DASH Square Root Graph'),
+    html.H5('DASH Square Root Graph', style={'text-align': 'center', 'color': 'white'}),
     dcc.Graph(id='slider-graph', animate=True, style={"backgroundColor": "#1a2d46", 'color': '#ffffff'}),
     dcc.Slider(
         id='slider-updatemode',

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load plotly_dash %}
 
-{% block title %} "METRICS" {% endblock %}
+{% block title %} DASHBOARD {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -13,7 +13,7 @@
     </div>
     <br>
     <div class="card" style="height: 100%; width:100%">
-        {{ scatterplot | safe }}
+        {{ scatter_plot | safe }}
     </div>
 
 {% endblock content %}

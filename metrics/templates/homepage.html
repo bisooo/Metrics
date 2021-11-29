@@ -8,44 +8,54 @@
 
 {% block content %}
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card card-profile">
-                    <div class="card-body">
-                        <h4 class="card-title" style="text-align: center">
-                            " HOMEPAGE "
-                        </h4>
-                        <h5>
-                            {% if not invalid_token %}
-                                {% for repo in repos %}
-                                    <a href="{{ repo.html_url }}"> {{ repo.full_name }}</a>
-                                    <br><br>
-                                {% endfor %}
-                            {% else %}
-                                <br>
-                                <h3 class="text-danger" style="text-align: center">INVALID GITHUB TOKEN</h3>
-                                <h3 style="text-align: center">
-                                    <a target="_blank" href="https://github.com/settings/tokens/new"> GENERATE A GITHUB ACCESS TOKEN </a>
-                                </h3>
-                                <div class="text-info" style="text-align: center">
-                                    <h4 class="text-info" style="text-align: center"> REQUIRED SCOPES :</h4>
-                                    <p>repo:status</p>
-                                    <p>public_repo</p>
-                                    <p>read:org</p>
-                                    <p>read:user</p>
-                                    <p>user:email</p>
-                                    <br>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-profile">
+            <div class="card-body">
+                {% if not invalid_token %}
+                    <h4 class="card-title" style="text-align: center">
+                        " HOMEPAGE "
+                    </h4>
+                    <div class="card-body all-icons">
+                        <div class="row">
+                            {% for repo in repos %}
+                                <div class="font-icon-list col-lg-4 col-md-3 col-sm-4 col-xs-6 col-xs-6">
+                                    <div class="font-icon-detail">
+                                        <i class="tim-icons icon-planet"></i>
+                                        <br><br>
+                                        <h5>
+                                            <a target="_blank" href="{{ repo.html_url }}"> {{ repo.full_name }}</a>
+                                        </h5>
+                                    </div>
                                 </div>
-                                <h3 style="text-align: center">
-                                    <a href="{% url 'profile' %}"> VALIDATE YOUR GITHUB ACCESS TOKEN </a>
-                                </h3>
-                            {% endif %}
-                        </h5>
-
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
+
+                    <br><br>
+                {% else %}
+                    <br>
+                    <h3 class="text-danger" style="text-align: center">GITHUB TOKEN MISSING</h3>
+                    <h3 style="text-align: center">
+                        <a target="_blank" href="https://github.com/settings/tokens/new"> GENERATE A GITHUB ACCESS TOKEN </a>
+                    </h3>
+                    <div class="text-info" style="text-align: center">
+                        <h4 class="text-info" style="text-align: center"> REQUIRED SCOPES :</h4>
+                        <p>repo:status</p>
+                        <p>public_repo</p>
+                        <p>read:org</p>
+                        <p>read:user</p>
+                        <p>user:email</p>
+                        <br>
+                    </div>
+                    <h3 style="text-align: center">
+                        <a href="{% url 'profile' %}"> VALIDATE YOUR GITHUB ACCESS TOKEN </a>
+                    </h3>
+                {% endif %}
             </div>
         </div>
+    </div>
+</div>
 
 {% endblock content %}
 

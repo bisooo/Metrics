@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from git.models import User
+from django.contrib.admin import ModelAdmin
+from git.models import User, Repository
 
 
 # ADMIN PAGE USER VIEW
@@ -13,4 +14,12 @@ class AccountAdmin(UserAdmin):
     fieldsets = ()
 
 
+# ADMIN PAGE REPOSITORY VIEW
+class RepositoryAdmin(ModelAdmin):
+    list_display = ('user', 'owner', 'name', 'url')
+    search_fields = ('user', 'owner', 'name')
+    readonly_fields = ('user', 'owner', 'name', 'url')
+
+
 admin.site.register(User, AccountAdmin)
+admin.site.register(Repository, RepositoryAdmin)

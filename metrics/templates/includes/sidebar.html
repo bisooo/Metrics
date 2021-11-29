@@ -16,8 +16,14 @@
 
       <li class="{% if 'index' in segment %} active {% endif %}">
         <a href="{% url 'dashboard' %}">
-          <i class="tim-icons icon-chart-pie-36"></i>
+          <i class="tim-icons icon-sound-wave"></i>
           <p>DASHBOARD</p>
+        </a>
+      </li>
+      <li class="{% if 'tables' in segment %} active {% endif %}">
+        <a href="{% url 'watchlist' %}">
+            <i class="tim-icons icon-settings-gear-63"></i>
+            <p>WATCH LIST</p>
         </a>
       </li>
       <li class="{% if 'icons' in segment %} active {% endif %}">
@@ -32,28 +38,22 @@
           <p>NOTIFICATIONS</p>
         </a>
       </li>
-      <li class="{% if 'page-user' in segment %} active {% endif %}">
-        <a href="{% url 'profile' %}">
-          <i class="tim-icons icon-single-02"></i>
-          <p>PROFILE</p>
-        </a>
-      </li>
-      <li class="{% if 'tables' in segment %} active {% endif %}">
-        <a href="{% url 'tables' %}">
-          <i class="tim-icons icon-puzzle-10"></i>
-          <p>TABLES</p>
-        </a>
-      </li>
       <li class="{% if 'typography' in segment %} active {% endif %}">
         <a href="{% url 'typo' %}">
           <i class="tim-icons icon-align-center"></i>
           <p>TYPOGRAPHY</p>
         </a>
       </li>
+      <li class="{% if 'page-user' in segment %} active {% endif %}">
+        <a href="{% url 'profile' %}">
+            <i class="tim-icons icon-single-02"></i>
+            <p>PROFILE</p>
+        </a>
+      </li>
       <li>
         <a href="{% url 'logout' %}" >
           <i class="tim-icons icon-button-power"></i>
-          <p>Logout</p>
+          <p>LOGOUT</p>
         </a>
       </li>
       {% else %}

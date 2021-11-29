@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from metrics.views import homepage, dashboard, profile, icons, notifications, tables, typography
+from metrics.views import homepage, dashboard, profile, icons, notifications, watchlist, typography
 from git.views import register, login, logout
 from metrics.visuals import example
 
@@ -26,7 +26,7 @@ urlpatterns = [
     path('icons/', icons, name='icons'),
     path('notifications/', notifications, name='notifications'),
     path('profile/', profile, name='profile'),
-    path('tables/', tables, name='tables'),
+    path('watchlist/', watchlist, name='watchlist'),
     path('typography/', typography, name='typo'),
     path('login/', login, name='login'),
     path('register/', register, name='register'),

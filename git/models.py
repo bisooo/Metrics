@@ -47,3 +47,14 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+
+
+# REPOSITORY MODEL
+class Repository(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.CharField(verbose_name='repo owner', max_length=39)
+    name = models.CharField(verbose_name='repo name', max_length=40)
+    url = models.CharField(verbose_name='repo url', max_length=180)
+
+    def __str__(self):
+        return self.owner + "/" + self.name

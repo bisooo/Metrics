@@ -4,7 +4,6 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from git.forms import RegistrationForm, LoginForm
 # GITHUB LIBRARY
-from github3 import login as git_login
 
 
 def register(request):

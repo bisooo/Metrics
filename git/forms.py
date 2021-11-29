@@ -7,7 +7,6 @@ from git.models import User
 # USER REGISTRATION FORM
 class RegistrationForm(UserCreationForm):
     username = forms.CharField(max_length=20)
-    token = forms.CharField(min_length=40, max_length=40)
 
     class Meta:
         model = User

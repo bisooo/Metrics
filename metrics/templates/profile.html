@@ -10,55 +10,47 @@
 <div class="row">
   <div class="col-md-12">
     <div class="card">
-      <div class="card-header">
-        <h5 class="title">EDIT PROFILE</h5>
+      <div class="card-header" style="text-align: center;">
+        <h4 class="title">EDIT PROFILE</h4>
       </div>
       <div class="card-body">
-        <form>
+        <form method="post">
+          {% csrf_token %}
           <div class="row">
-            <div class="col-md-6 pr-md-1">
+            <div class="col-md-6 pr-md-1" style="text-align: center;">
               <div class="form-group">
                 <label>USER ID</label>
-                <input type="text" class="form-control" disabled="" value="{{ request.user.id }}">
+                <input type="text" class="form-control" style="text-align: center;" disabled="" value="{{ request.user.id }}">
               </div>
             </div>
-            <div class="col-md-6 px-md-1">
+            <div class="col-md-6 px-md-1" style="text-align: center;">
               <div class="form-group">
                 <label>USERNAME</label>
-                <input type="text" class="form-control" value="{{ request.user.username }}">
+                <input type="text" class="form-control" style="text-align: center;" disabled="" value="{{ request.user.username }}">
               </div>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6 pr-md-1">
+            <div class="col-md-12 pr-md-1" style="text-align: center;">
               <div class="form-group">
-                <label>FIRST NAME</label>
-                <input type="text" class="form-control" placeholder="" value="">
-              </div>
-            </div>
-            <div class="col-md-6 pl-md-1">
-              <div class="form-group">
-                <label>LAST NAME</label>
-                <input type="text" class="form-control" placeholder="" value="">
+                <label>GITHUB TOKEN</label>
+                <input type="text" class="form-control" name="token" style="text-align: center;" value="{{ request.user.token }}">
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>ABOUT ME</label>
-                <textarea rows="4" cols="80" class="form-control" placeholder="" value=""></textarea>
-              </div>
-            </div>
-          </div>
+        <div class="card-footer" style="text-align: center">
+            <button type="submit" class="btn btn-fill btn-primary">VALIDATE TOKEN</button>
+        </div>
         </form>
-      </div>
-      <div class="card-footer" style="align-self: center">
-        <button type="submit" class="btn btn-fill btn-primary">SAVE</button>
       </div>
     </div>
   </div>
 </div>
+{% if invalid_token %}
+    <h3 class="text-danger" style="text-align: center"> INVALID TOKEN </h3>
+{% else %}
+    <h3 class="text-success" style="text-align: center"> VALID TOKEN </h3>
+{% endif %}
 
 
 {% endblock content %}

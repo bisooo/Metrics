@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # FORMS
+    'crispy_forms',
     # METRICS
     'metrics',
     'django_plotly_dash.apps.DjangoPlotlyDashConfig',

@@ -22,6 +22,7 @@ dash-table==4.11.3
 defusedxml==0.7.1
 Deprecated==1.2.13
 Django==3.2.9
+django-crispy-forms==1.13.0
 django-plotly-dash==1.6.6
 django-redis==5.0.0
 dpd-components==0.1.0

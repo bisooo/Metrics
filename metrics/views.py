@@ -22,7 +22,7 @@ def profile(request):
     if request.user.token == "":
         context['invalid_token'] = True
     if request.POST:
-        token = request.POST.get("token", '')
+        token = request.POST["token"]
         git = login(token=token)
         if git:
             try:
@@ -50,7 +50,7 @@ def watchlist(request):
         else:
             context['no_repos'] = True
         if request.POST:
-            url = request.POST.get("repo_url", '')
+            url = request.POST["repo_url"]
             if url:
                 if url.startswith("https://"):
                     try:

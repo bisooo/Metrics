@@ -1,3 +1,4 @@
+{% load crispy_forms_tags %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,7 +33,7 @@
 
         <div class="row">
             <div class="card col-md-12">
-
+                <br>
                 <form role="form" method="post">
                     {% csrf_token %}
                     <div class="card-header" style="text-align: center">
@@ -41,20 +42,13 @@
                     {% for field in register_form %}
                         <div class="card-body">
                             <div class="row" style="text-align: center">
-                                <div class="col-md-12 px-md-5">
+                                <div class="container text-center col-md-4 px-md-5">
                                     <div class="form-group">
-                                        <label> {{ field.label_tag }} </label>
-                                        <br>
-                                        {{ field }}
+                                        {{ field | as_crispy_field }}
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    {% endfor %}
-                    {% for field in register_form %}
-                        {% for error in field.errors %}
-                            {{ error }}
-                        {% endfor %}
                     {% endfor %}
                     <div class="card-footer">
                         <div class="row" style="text-align: center">
@@ -72,6 +66,7 @@
                         <a href="{% url 'login' %}" class="btn btn-fill btn-primary">LOGIN</a>
                     </div>
                 </div>
+                <br>
             </div>
         </div>
     </div>

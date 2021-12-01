@@ -1,7 +1,6 @@
 {% extends "base.html" %}
-{% load plotly_dash %}
 
-{% block title %} "METRICS" {% endblock %}
+{% block title %} " METRICS " ™ {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -12,26 +11,10 @@
     <div class="col-md-12">
         <div class="card card-profile">
             <div class="card-body">
-                {% if not invalid_token %}
+                {% if valid_token %}
                     <h4 class="title" style="text-align: center">
-                        " HOMEPAGE "
+                        " HOME "
                     </h4>
-                    <div class="card-body all-icons">
-                        <div class="row">
-                            {% for repo in repos %}
-                                <div class="font-icon-list col-lg-4 col-md-3 col-sm-4 col-xs-6 col-xs-6">
-                                    <div class="font-icon-detail">
-                                        <i class="tim-icons icon-planet"></i>
-                                        <br><br>
-                                        <h5>
-                                            <a target="_blank" href="{{ repo.html_url }}"> {{ repo.full_name }}</a>
-                                        </h5>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-
                     <br><br>
                 {% else %}
                     <br>

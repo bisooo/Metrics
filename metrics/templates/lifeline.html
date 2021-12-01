@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %} TYPOGRAPHY {% endblock %}
+{% block title %} LIFELINE {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
-
-<div class="row">
+    {% if valid_token %}
+        <div class="row">
   <div class="col-md-12">
     <div class="card">
       <div class="card-header mb-5">
@@ -147,6 +147,33 @@
     </div>
   </div>
 </div>
+    {% else %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-profile">
+                    <div class="card-body">
+                        <br>
+                        <h3 class="text-danger" style="text-align: center">GITHUB TOKEN MISSING</h3>
+                        <h3 style="text-align: center">
+                            <a target="_blank" href="https://github.com/settings/tokens/new"> GENERATE A GITHUB ACCESS TOKEN </a>
+                        </h3>
+                        <div class="text-info" style="text-align: center">
+                            <h4 class="text-info" style="text-align: center"> REQUIRED SCOPES :</h4>
+                            <p>repo:status</p>
+                            <p>public_repo</p>
+                            <p>read:org</p>
+                            <p>read:user</p>
+                            <p>user:email</p>
+                            <br>
+                        </div>
+                        <h3 style="text-align: center">
+                            <a href="{% url 'profile' %}"> VALIDATE YOUR GITHUB ACCESS TOKEN </a>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 
 {% endblock content %}
 

@@ -2,12 +2,20 @@ from django.shortcuts import render, redirect
 # PLOTLY
 from plotly.offline import plot
 import plotly.graph_objects as go
+# GITHUB API LIBRARY SERVICES
+from git.services.git import GitWrapper as git
 
 
 def dashboard(request):
 
     if not request.user.is_authenticated:
         return redirect('login')
+
+    context = {}
+    token = request.user.token
+    valid_token = git(token).validate_login()
+    if valid_token:
+        context['valid_token'] = True
 
     def scatter():
         x1 = [1, 2, 3, 4, 5]
@@ -21,6 +29,6 @@ def dashboard(request):
         plot_div = plot(fig, output_type='div')
         return plot_div
 
-    context = {'scatter_plot': scatter()}
+    context['scatter_plot'] = scatter()
 
     return render(request, 'dash.html', context)

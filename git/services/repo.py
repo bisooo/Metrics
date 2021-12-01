@@ -1,6 +1,21 @@
 from git.models import Repository
 
 
+def watched_user_repos(username, repos):
+    objs = []
+    watched = []
+    for repo in repos:
+        if Repository.objects.all().filter(user__username=username,
+                                           owner__iexact=repo.owner,
+                                           name__iexact=repo.name):
+            objs.append(repo)
+            watched.append(True)
+        else:
+            objs.append(repo)
+            watched.append(False)
+    return zip(objs, watched)
+
+
 def get_users_repos(username):
     return Repository.objects.all().filter(user__username=username)
 

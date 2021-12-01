@@ -11,43 +11,63 @@
     <div class="col-md-12">
         <div class="card card-profile">
             <div class="card-body">
-                <br>
-                {% if not no_repos %}
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-sm-10">
-                                <h4 class="title">
-                                    " WATCH LIST "
-                                </h4>
-                            </div>
-                            <div class="col-sm-2">
-                                <a href="{% url 'watch_repo' %}" class="btn btn-fill btn-primary"> ADD </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body all-icons">
-                        <div class="row">
-                            {% for repo in repos %}
-                                <div class="font-icon-list col-lg-6 col-md-3 col-sm-4 col-xs-6 col-xs-6">
-                                    <div class="font-icon-detail">
-                                        <i class="tim-icons icon-planet"></i>
-                                        <br><br>
-                                        <h5>
-                                            <a target="_blank" href="{{ repo.url }}"> {{ repo.owner }}/{{ repo.name }}</a>
-                                        </h5>
-                                        <a href="{% url 'delete_repo' repo.id %}" class="btn btn-fill btn-danger"> REMOVE </a>
-                                    </div>
+                {% if valid_token %}
+                    <br>
+                    {% if not no_repos %}
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <h4 class="title">
+                                        " WATCH LIST "
+                                    </h4>
                                 </div>
-                            {% endfor %}
+                                <div class="col-sm-2">
+                                    <a href="{% url 'watch_repo' %}" class="btn btn-fill btn-primary"> ADD </a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                        <div class="card-body all-icons">
+                            <div class="row">
+                                {% for repo in repos %}
+                                    <div class="font-icon-list col-lg-6 col-md-3 col-sm-4 col-xs-6 col-xs-6">
+                                        <div class="font-icon-detail">
+                                            <i class="tim-icons icon-planet"></i>
+                                            <br><br>
+                                            <h5>
+                                                <a target="_blank" href="{{ repo.url }}"> {{ repo.owner }}/{{ repo.name }}</a>
+                                            </h5>
+                                            <a href="{% url 'delete_repo' repo.id %}" class="btn btn-fill btn-danger"> REMOVE </a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
 
-                    <br><br>
+                        <br><br>
+                    {% else %}
+                        <br>
+                        <h3 class="text-info" style="text-align: center">YOU AREN'T WATCHING ANY REPOS </h3>
+                        <h3 class="text-info" style="text-align: center">
+                            <a href="{% url 'watch_repo' %}"> ADD A REPO TO GET STARTED </a>
+                        </h3>
+                    {% endif %}
                 {% else %}
                     <br>
-                    <h3 class="text-info" style="text-align: center">YOU AREN'T WATCHING ANY REPOS </h3>
-                    <h3 class="text-info" style="text-align: center">
-                        <a href="{% url 'watch_repo' %}"> ADD A REPO TO GET STARTED </a>
+                    <h3 class="text-danger" style="text-align: center">GITHUB TOKEN MISSING</h3>
+                    <h3 style="text-align: center">
+                        <a target="_blank" href="https://github.com/settings/tokens/new"> GENERATE A GITHUB ACCESS TOKEN </a>
+                    </h3>
+                    <div class="text-info" style="text-align: center">
+                        <h4 class="text-info" style="text-align: center"> REQUIRED SCOPES :</h4>
+                        <p>repo:status</p>
+                        <p>public_repo</p>
+                        <p>read:org</p>
+                        <p>read:user</p>
+                        <p>user:email</p>
+                        <br>
+                    </div>
+                    <h3 style="text-align: center">
+                        <a href="{% url 'profile' %}"> VALIDATE YOUR GITHUB ACCESS TOKEN </a>
                     </h3>
                 {% endif %}
             </div>

@@ -58,3 +58,17 @@ class Repository(models.Model):
 
     def __str__(self):
         return self.owner + "/" + self.name
+
+
+# PULL REQUEST WAIT MODEL
+class PullRequestWait(models.Model):
+    repo = models.ForeignKey(Repository, on_delete=models.CASCADE)
+    number = models.PositiveIntegerField()
+    created_at = models.DateTimeField()
+    merged_at = models.DateTimeField()
+    updated_at = models.DateTimeField()
+    closed_at = models.DateTimeField()
+    merged = models.BooleanField()
+
+    def __str__(self):
+        return self.repo.name + str(self.number) + str(self.merged)

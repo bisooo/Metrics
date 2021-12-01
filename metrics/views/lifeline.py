@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from git.services.git import GitWrapper as git
 
 
-def homepage(request):
+def lifeline(request):
 
     if not request.user.is_authenticated:
         return redirect('login')
@@ -14,4 +14,4 @@ def homepage(request):
     if valid_token:
         context['valid_token'] = True
 
-    return render(request, 'homepage.html', context)
+    return render(request, 'lifeline.html', context)

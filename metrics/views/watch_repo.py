@@ -10,7 +10,7 @@ from git.services.utlis import *
 def watch_repo(request):
 
     if not request.user.is_authenticated:
-        redirect('login')
+        return redirect('login')
 
     context = {}
     if request.POST:

@@ -1,7 +1,6 @@
 {% extends "base.html" %}
-{% load plotly_dash %}
 
-{% block title %} DASHBOARD {% endblock %}
+{% block title %} REPOS {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -13,14 +12,32 @@
             <div class="card card-profile">
                 <div class="card-body">
                     {% if valid_token %}
-                        <div class="{% plotly_class name='example'%} card" style="height: 100%; width: 100%">
-                            <br>
-                            {% plotly_app name='example' ratio=0.65%}
+                        <h4 class="title" style="text-align: center">
+                            ADD YOUR REPOS TO THE WATCH LIST
+                        </h4>
+                        <div class="card-body all-icons">
+                            <div class="row">
+                                {% for repo, watched in repos %}
+                                    <div class="font-icon-list col-lg-4 col-md-3 col-sm-4 col-xs-6 col-xs-6">
+                                        <div class="font-icon-detail">
+                                            <i class="tim-icons icon-planet"></i>
+                                            <br><br>
+                                            <h5>
+                                                <a target="_blank" href="{{ repo.html_url }}"> {{ repo.full_name }}</a>
+                                                <br>
+                                                {% if watched %}
+                                                    <a class="btn btn-info"> WATCHED </a>
+                                                {% else %}
+                                                    <a href="{% url 'repo_add' repo.owner repo.name %}" class="btn btn-primary"> WATCH </a>
+                                                {% endif %}
+                                            </h5>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
-                        <br>
-                        <div class="card" style="height: 100%; width:100%">
-                            {{ scatter_plot | safe }}
-                        </div>
+
+                        <br><br>
                     {% else %}
                         <br>
                         <h3 class="text-danger" style="text-align: center">GITHUB TOKEN MISSING</h3>
@@ -40,7 +57,6 @@
                             <a href="{% url 'profile' %}"> VALIDATE YOUR GITHUB ACCESS TOKEN </a>
                         </h3>
                     {% endif %}
-
                 </div>
             </div>
         </div>

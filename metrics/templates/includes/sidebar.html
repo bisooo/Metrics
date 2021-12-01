@@ -16,33 +16,33 @@
 
       <li class="{% if 'index' in segment %} active {% endif %}">
         <a href="{% url 'dashboard' %}">
-          <i class="tim-icons icon-sound-wave"></i>
+          <i class="tim-icons icon-components"></i>
           <p>DASHBOARD</p>
         </a>
       </li>
-      <li class="{% if 'tables' in segment %} active {% endif %}">
-        <a href="{% url 'watchlist' %}">
-            <i class="tim-icons icon-settings-gear-63"></i>
-            <p>WATCH LIST</p>
+      <li class="{% if 'typography' in segment %} active {% endif %}">
+          <a href="{% url 'lifeline' %}">
+              <i class="tim-icons icon-sound-wave"></i>
+              <p>" LIFELINE "</p>
+          </a>
+      </li>
+      <li class="{% if 'notifications' in segment %} active {% endif %}">
+        <a href="{% url 'flow' %}">
+          <i class="tim-icons icon-atom"></i>
+          <p>" FLOW "</p>
         </a>
       </li>
       <li class="{% if 'icons' in segment %} active {% endif %}">
-        <a href="{% url 'icons' %}">
-          <i class="tim-icons icon-atom"></i>
-          <p>ICONS</p>
-        </a>
+           <a href="{% url 'my_repos' %}">
+               <i class="tim-icons icon-world"></i>
+               <p>MY REPOS</p>
+           </a>
       </li>
-      <li class="{% if 'notifications' in segment %} active {% endif %}">
-        <a href="{% url 'notifications' %}">
-          <i class="tim-icons icon-bell-55"></i>
-          <p>NOTIFICATIONS</p>
-        </a>
-      </li>
-      <li class="{% if 'typography' in segment %} active {% endif %}">
-        <a href="{% url 'typo' %}">
-          <i class="tim-icons icon-align-center"></i>
-          <p>TYPOGRAPHY</p>
-        </a>
+      <li class="{% if 'tables' in segment %} active {% endif %}">
+          <a href="{% url 'watchlist' %}">
+              <i class="tim-icons icon-settings-gear-63"></i>
+              <p>WATCH LIST</p>
+          </a>
       </li>
       <li class="{% if 'page-user' in segment %} active {% endif %}">
         <a href="{% url 'profile' %}">

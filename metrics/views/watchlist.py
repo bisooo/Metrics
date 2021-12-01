@@ -1,65 +1,49 @@
 from django.shortcuts import render, redirect
-# GITHUB LIBRARY
-from github3 import login
-from github3.exceptions import *
-# MODELS
-from git.models import Repository
+# GIT API LIBRARY SERVICES
+from git.services.git import GitWrapper as git
+# REPOSITORY SERVICES
+from git.services.repo import *
+# UTILITY SERVICES
+from git.services.utlis import *
 
 
 def watchlist(request):
     context = {}
-    if request.user.is_authenticated:
-        repos = Repository.objects.filter(user__username=request.user.username)
-        if repos:
-            context['repos'] = repos
-        else:
-            context['no_repos'] = True
-        if request.POST:
-            url = request.POST["repo_url"]
-            if url:
-                if url.startswith("https://"):
-                    try:
-                        owner = url.split('/')[3]
-                        repo_name = url.split('/')[4]
-                    except IndexError:
-                        print("INDEX ERROR")
-                        context['url_submitted'] = True
-                        context['invalid_url'] = True
-                        return render(request, 'watchlist.html', context)
-                else:
-                    try:
-                        owner = url.split('/')[1]
-                        repo_name = url.split('/')[2]
-                    except IndexError:
-                        print("INDEX ERROR")
-                        context['url_submitted'] = True
-                        context['invalid_url'] = True
-                        return render(request, 'watchlist.html', context)
-                token = request.user.token
-                git = login(token=token)
-                if git and owner and repo_name:
-                    try:
-                        repo = git.repository(owner, repo_name)
-                        repo_url = repo.html_url
-                        check = Repository.objects.filter(user_id=request.user.id, owner=owner, name=repo_name)
-                        if not check:
-                            repo_obj = Repository(user_id=request.user.id, owner=owner, name=repo_name, url=repo_url)
-                            repo_obj.save()
-                            context['already_exists'] = False
-                        else:
-                            context['already_exists'] = True
-                        context['url_submitted'] = True
-                        context['invalid_url'] = False
-                    except (GitHubError, GitHubException) as e:
-                        print("ERROR")
-                        if e.message:
-                            context['is_error'] = True
-                            context['error'] = e.message
-            else:
-                context['url_submitted'] = True
-                context['invalid_url'] = True
-        else:
-            context['url_submitted'] = False
-    else:
+    if not request.user.is_authenticated:
         return redirect('login')
+
+    repos = get_users_repos(request.user.username)
+    if repos:
+        context['repos'] = repos
+    else:
+        context['no_repos'] = True
+    if request.POST:
+        url = request.POST["repo_url"]
+        try:
+            owner, name = validate_url(url)
+            token = request.user.token
+            valid_token = git(token).validate_login()
+            if valid_token:
+                repo = git(token).get_repo_by_name(owner, name)
+                print(repo)
+                if repo:
+                    already_watched = repo_watched(request.user.id, owner, name)
+                    url = repo.html_url
+                    if not already_watched:
+                        watch_repo(request.user.id, owner, name, url)
+                        context['already_exists'] = False
+                    else:
+                        context['already_exists'] = True
+                    context['url_submitted'] = True
+                    context['invalid_url'] = False
+                else:
+                    context['url_submitted'] = True
+                    context['git_error'] = True
+            else:
+                return redirect('profile')
+        except TypeError:
+            context['url_submitted'] = True
+            context['invalid_url'] = True
+            return render(request, 'watchlist.html', context)
+
     return render(request, 'watchlist.html', context)

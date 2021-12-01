@@ -35,8 +35,8 @@
                 <br><br>
             {% else %}
                 <br>
-                <h3 class="text-danger" style="text-align: center">YOU AREN'T WATCHING ANY REPOS </h3>
-                <h3 class="text-danger" style="text-align: center">ADD A REPO BELOW TO GET STARTED</h3>
+                <h3 class="text-info" style="text-align: center">YOU AREN'T WATCHING ANY REPOS </h3>
+                <h3 class="text-info" style="text-align: center">ADD A REPO BELOW TO GET STARTED</h3>
             {% endif %}
         </div>
     </div>
@@ -50,7 +50,7 @@
             </h4>
             <div class="card-body">
                 <form method="post" action="#result">
-                    {% csrf_token %}
+                {% csrf_token %}
                     <div class="row" id="result">
                         <div class="col-md-12 pr-md-1" style="text-align: center;">
                             <div class="form-group">
@@ -63,13 +63,10 @@
                         <button type="submit" class="btn btn-fill btn-primary">ADD</button>
                     </div>
                 </form>
-                {% if is_error %}
-                    <h3 class="text-danger" style="text-align: center"> {{ error }} </h3>
-                {% endif %}
                 {% if url_submitted %}
                     {% if already_exists %}
                         <h3 class="text-success" style="text-align: center"> REPO ALREADY IN YOUR WATCHLIST </h3>
-                    {% elif invalid_url %}
+                    {% elif invalid_url or git_error %}
                         <h3 class="text-danger" style="text-align: center"> INVALID URL </h3>
                     {% elif not invalid_url and not already_exists %}
                         <h3 class="text-success" style="text-align: center"> SUCCESSFULLY ADDED TO YOUR WATCHLIST </h3>

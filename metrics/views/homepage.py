@@ -1,29 +1,21 @@
 from django.shortcuts import render, redirect
-# GITHUB LIBRARY
-from github3 import login
-from github3.exceptions import *
+# GITHUB API LIBRARY SERVICES
+from git.services.git import GitWrapper as git
 
 
 def homepage(request):
-    context = {}
-    if request.user.is_authenticated:
-        token = request.user.token
-        git = login(token=token)
-        if git:
-            try:
-                git.me()
-                repos = []
-                for repo in git.repositories():
-                    repos.append(repo)
-                context['repos'] = repos
-                context['invalid_token'] = False
-            except (GitHubError, GitHubException) as e:
-                print("ERROR")
-                if e.message:
-                    print(e.message)
-                context['invalid_token'] = True
-        else:
-            context['invalid_token'] = True
-    else:
+
+    if not request.user.is_authenticated:
         return redirect('login')
+
+    context = {}
+    token = request.user.token
+    valid_token = git(token).validate_login()
+    if valid_token:
+        repos = git(token).get_user_repos()
+        context['repos'] = repos
+        context['invalid_token'] = False
+    else:
+        context['invalid_token'] = True
+
     return render(request, 'homepage.html', context)

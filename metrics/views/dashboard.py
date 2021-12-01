@@ -1,10 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 # PLOTLY
 from plotly.offline import plot
 import plotly.graph_objects as go
 
 
 def dashboard(request):
+
+    if not request.user.is_authenticated:
+        return redirect('login')
+
     def scatter():
         x1 = [1, 2, 3, 4, 5]
         y1 = [30, 45, 20, 55]
@@ -18,4 +22,5 @@ def dashboard(request):
         return plot_div
 
     context = {'scatter_plot': scatter()}
+
     return render(request, 'dash.html', context)

@@ -8,69 +8,47 @@
 {% block content %}
 
 <div class="row">
-<div class="col-md-12">
-    <div class="card card-profile">
-        <div class="card-body">
-            {% if not no_repos %}
-                <h4 class="card-title" style="text-align: center">
-                    " WATCH LIST "
-                </h4>
-                <div class="card-body all-icons">
-                    <div class="row">
-                        {% for repo in repos %}
-                            <div class="font-icon-list col-lg-6 col-md-3 col-sm-4 col-xs-6 col-xs-6">
-                                <div class="font-icon-detail">
-                                    <i class="tim-icons icon-planet"></i>
-                                    <br><br>
-                                    <h5>
-                                        <a target="_blank" href="{{ repo.url }}"> {{ repo.owner }}/{{ repo.name }}</a>
-                                    </h5>
-                                    <button class="btn btn-fill btn-primary"> REMOVE </button>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <br><br>
-            {% else %}
-                <br>
-                <h3 class="text-info" style="text-align: center">YOU AREN'T WATCHING ANY REPOS </h3>
-                <h3 class="text-info" style="text-align: center">ADD A REPO BELOW TO GET STARTED</h3>
-            {% endif %}
-        </div>
-    </div>
-</div>
-</div>
-<div class="row">
     <div class="col-md-12">
         <div class="card card-profile">
-            <h4 class="card-title" style="text-align: center">
-                ADD A NEW REPO TO YOUR WATCH LIST
-            </h4>
             <div class="card-body">
-                <form method="post" action="#result">
-                {% csrf_token %}
-                    <div class="row" id="result">
-                        <div class="col-md-12 pr-md-1" style="text-align: center;">
-                            <div class="form-group">
-                                <label>GITHUB REPO URL</label>
-                                <input type="text" class="form-control" name="repo_url" style="text-align: center;" value="">
+                <br>
+                {% if not no_repos %}
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <h4 class="title">
+                                    " WATCH LIST "
+                                </h4>
+                            </div>
+                            <div class="col-sm-2">
+                                <a href="{% url 'watch_repo' %}" class="btn btn-fill btn-primary"> ADD </a>
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer" style="text-align: center">
-                        <button type="submit" class="btn btn-fill btn-primary">ADD</button>
+                    <div class="card-body all-icons">
+                        <div class="row">
+                            {% for repo in repos %}
+                                <div class="font-icon-list col-lg-6 col-md-3 col-sm-4 col-xs-6 col-xs-6">
+                                    <div class="font-icon-detail">
+                                        <i class="tim-icons icon-planet"></i>
+                                        <br><br>
+                                        <h5>
+                                            <a target="_blank" href="{{ repo.url }}"> {{ repo.owner }}/{{ repo.name }}</a>
+                                        </h5>
+                                        <a href="{% url 'delete_repo' repo.id %}" class="btn btn-fill btn-danger"> REMOVE </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
                     </div>
-                </form>
-                {% if url_submitted %}
-                    {% if already_exists %}
-                        <h3 class="text-success" style="text-align: center"> REPO ALREADY IN YOUR WATCHLIST </h3>
-                    {% elif invalid_url or git_error %}
-                        <h3 class="text-danger" style="text-align: center"> INVALID URL </h3>
-                    {% elif not invalid_url and not already_exists %}
-                        <h3 class="text-success" style="text-align: center"> SUCCESSFULLY ADDED TO YOUR WATCHLIST </h3>
-                    {% endif %}
+
+                    <br><br>
+                {% else %}
+                    <br>
+                    <h3 class="text-info" style="text-align: center">YOU AREN'T WATCHING ANY REPOS </h3>
+                    <h3 class="text-info" style="text-align: center">
+                        <a href="{% url 'watch_repo' %}"> ADD A REPO TO GET STARTED </a>
+                    </h3>
                 {% endif %}
             </div>
         </div>

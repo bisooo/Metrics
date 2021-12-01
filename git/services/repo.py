@@ -13,6 +13,11 @@ def repo_watched(user, owner, name):
         return False
 
 
-def watch_repo(user, owner, name, url):
+def add_repo(user, owner, name, url):
     obj = Repository(user_id=user, owner=owner, name=name, url=url)
     obj.save()
+
+
+def delete_repo_by_id(id):
+    obj = Repository.objects.all().get(id=id)
+    obj.delete()

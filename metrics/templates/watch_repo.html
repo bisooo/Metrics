@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %} WATCH LIST {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-profile">
+                <br>
+                <h4 class="card-title" style="text-align: center">
+                    ADD A NEW REPO TO YOUR WATCH LIST
+                </h4>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-12 pr-md-1" style="text-align: center;">
+                                <div class="form-group">
+                                    <label>GITHUB REPO URL</label>
+                                    <input type="text" class="form-control" name="repo_url" style="text-align: center;" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer" style="text-align: center">
+                            <button type="submit" class="btn btn-fill btn-info"> ADD </button>
+                        </div>
+                    </form>
+                    {% if url_submitted %}
+                        {% if already_exists %}
+                            <h3 class="text-success" style="text-align: center"> REPO ALREADY IN YOUR WATCHLIST </h3>
+                        {% elif invalid_url or git_error %}
+                            <h3 class="text-danger" style="text-align: center"> INVALID URL </h3>
+                        {% elif not invalid_url and not already_exists %}
+                            <h3 class="text-success" style="text-align: center"> SUCCESSFULLY ADDED TO YOUR WATCHLIST </h3>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

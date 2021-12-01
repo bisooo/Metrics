@@ -11,6 +11,8 @@ def profile(request):
         return redirect('login')
 
     context = {}
+    if request.user.token == "":
+        context['invalid_token'] = True
     if request.POST:
         token = request.POST["token"]
         valid_token = git(token).validate_login()

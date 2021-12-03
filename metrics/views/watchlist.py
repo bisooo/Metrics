@@ -16,9 +16,9 @@ def watchlist(request):
     if valid_token:
         context['valid_token'] = True
 
-    repos = get_users_repos(request.user.username)
-    if repos:
-        context['repos'] = repos
+    watchlist = get_repos_watched(request.user)
+    if watchlist:
+        context['watchlist'] = watchlist
     else:
         context['no_repos'] = True
 
@@ -27,8 +27,7 @@ def watchlist(request):
 
 def delete_repo(request, repo_id):
 
-    if not request.user.is_authenticated:
-        return redirect('login')
+    repo = get_repo_by_id(repo_id)
+    watchlist_remove(request.user, repo)
 
-    delete_repo_by_id(repo_id)
     return watchlist(request)

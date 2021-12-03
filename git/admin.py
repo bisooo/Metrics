@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.admin import ModelAdmin
-from git.models import User, Repository, PullRequestWait
+from git.models import User, Repository, WatchList, PullRequestWait
 
 
 # USER VIEW
@@ -16,9 +16,16 @@ class AccountAdmin(UserAdmin):
 
 # REPOSITORY VIEW
 class RepositoryAdmin(ModelAdmin):
-    list_display = ('user', 'owner', 'name', 'url')
-    search_fields = ('user', 'owner', 'name')
-    readonly_fields = ('user', 'owner', 'name', 'url')
+    list_display = ('owner', 'name', 'url')
+    search_fields = ('owner', 'name')
+    readonly_fields = ('owner', 'name', 'url')
+
+
+# WATCHLIST VIEW
+class WatchListAdmin(ModelAdmin):
+    list_display = ('user', 'repo')
+    search_fields = ('user', 'repo')
+    readonly_fields = ('user', 'repo')
 
 
 # PULL REQUEST WAIT VIEW
@@ -30,4 +37,6 @@ class PRWaitAdmin(ModelAdmin):
 
 admin.site.register(User, AccountAdmin)
 admin.site.register(Repository, RepositoryAdmin)
+admin.site.register(WatchList, WatchListAdmin)
 admin.site.register(PullRequestWait, PRWaitAdmin)
+

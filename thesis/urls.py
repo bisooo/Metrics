@@ -6,7 +6,7 @@ from git.views import register, login, logout
 from metrics.views.homepage import homepage
 from metrics.views.dashboard import dashboard
 from metrics.views.profile import profile
-from metrics.views.repos import my_repos, repo_add
+from metrics.views.my_repos import my_repos, repo_add
 from metrics.views.watchlist import watchlist, delete_repo
 from metrics.views.watch_repo import watch_repo
 from metrics.views.lifeline import lifeline

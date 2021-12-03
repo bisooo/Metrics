@@ -28,15 +28,15 @@
                         </div>
                         <div class="card-body all-icons">
                             <div class="row">
-                                {% for repo in repos %}
+                                {% for i in watchlist %}
                                     <div class="font-icon-list col-lg-6 col-md-3 col-sm-4 col-xs-6 col-xs-6">
                                         <div class="font-icon-detail">
                                             <i class="tim-icons icon-planet"></i>
                                             <br><br>
                                             <h5>
-                                                <a target="_blank" href="{{ repo.url }}"> {{ repo.owner }}/{{ repo.name }}</a>
+                                                <a target="_blank" href="{{ i.repo.url }}"> {{ i.repo.owner }}/{{ i.repo.name }}</a>
                                             </h5>
-                                            <a href="{% url 'delete_repo' repo.id %}" class="btn btn-fill btn-danger"> REMOVE </a>
+                                            <a href="{% url 'delete_repo' i.repo.id %}" class="btn btn-fill btn-danger"> REMOVE </a>
                                         </div>
                                     </div>
                                 {% endfor %}
@@ -47,9 +47,17 @@
                     {% else %}
                         <br>
                         <h3 class="text-info" style="text-align: center">YOU AREN'T WATCHING ANY REPOS </h3>
+                        <br><br>
                         <h3 class="text-info" style="text-align: center">
-                            <a href="{% url 'watch_repo' %}"> ADD A REPO TO GET STARTED </a>
+                            <a href="{% url 'watch_repo' %}"> ADD PUBLIC GITHUB REPOS </a>
                         </h3>
+                        <br>
+                        <h4 style="text-align: center"> OR </h4>
+                        <br>
+                        <h3 class="text-info" style="text-align: center">
+                            <a href="{% url 'my_repos' %}"> ADD YOUR PERSONAL REPOS </a>
+                        </h3>
+                        <br>
                     {% endif %}
                 {% else %}
                     <br>

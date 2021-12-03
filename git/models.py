@@ -4,18 +4,16 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 # CUSTOM USER MANAGER MODEL
 class UserManager(BaseUserManager):
-    def create_user(self, username, token, password=None):
+    def create_user(self, username, password=None):
         if not username:
             raise ValueError("USERNAME MISSING")
-        if not token:
-            raise ValueError("TOKEN MISSING")
-        user = self.model(username=username, token=token)
+        user = self.model(username=username)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, token, password):
-        user = self.create_user(username=username, token=token, password=password)
+    def create_superuser(self, username, password):
+        user = self.create_user(username=username, password=password)
         user.is_admin = True
         user.is_staff = True
         user.is_superuser = True
@@ -51,13 +49,24 @@ class User(AbstractBaseUser):
 
 # REPOSITORY MODEL
 class Repository(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
     owner = models.CharField(verbose_name='repo owner', max_length=39)
     name = models.CharField(verbose_name='repo name', max_length=40)
     url = models.CharField(verbose_name='repo url', max_length=180)
 
+    class Meta:
+        unique_together = ["owner", "name"]
+
     def __str__(self):
         return self.owner + "/" + self.name
+
+
+# WATCHLIST MODEL
+class WatchList(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    repo = models.ForeignKey(Repository, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username + " & " + self.repo.owner + "/" + self.repo.name
 
 
 # PULL REQUEST WAIT MODEL

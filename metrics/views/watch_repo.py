@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 # GIT API LIBRARY SERVICES
 from git.services.git import GitWrapper as git
+# USER SERVICES
+from git.services.user import *
 # REPOSITORY SERVICES
 from git.services.repo import *
 # UTILITY SERVICES
@@ -22,10 +24,12 @@ def watch_repo(request):
             if valid_token:
                 repo = git(token).get_repo_by_name(owner, name)
                 if repo:
-                    already_watched = repo_watched(request.user.id, owner, name)
-                    url = repo.html_url
+                    already_watched = repo_watched(request.user, owner, name)
                     if not already_watched:
-                        add_repo(request.user.id, owner, name, url)
+                        repo = add_repo(owner, name, repo.html_url)
+                        user = get_user_by_username(request.user.username)
+                        watchlist_add(user, repo)
+                        # collect_yearly_prs(new_repo)
                         context['already_exists'] = False
                     else:
                         context['already_exists'] = True

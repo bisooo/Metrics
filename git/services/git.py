@@ -4,6 +4,8 @@ from github3.exceptions import *
 # PYTHON LIBRARY
 import datetime
 import pytz
+# REPOSITORY SERVICES
+from .repo import get_repo_by_name, pr_add
 
 
 class GitWrapper:
@@ -38,56 +40,25 @@ class GitWrapper:
                 print(e.message)
                 return None
 
-    def get_lastweek_prs(self, owner, name):
-        try:
-            repo = self.git.repository(owner, name)
-            prs = []
-            utc = pytz.UTC
-            lastweek_date = (datetime.datetime.now() - datetime.timedelta(days=7)).replace(tzinfo=utc)
-            for pr in repo.pull_requests():
-                creation_date = pr.created_at.replace(tzinfo=utc)
-                if creation_date > lastweek_date:
-                    prs.append(pr)
-                else:
-                    break
-            return prs
-        except (GitHubError, GitHubException) as e:
-            print("GITHUB ERROR")
-            if e.message:
-                print(e.message)
-
-    def get_lastmonth_prs(self, owner, name):
-        try:
-            repo = self.git.repository(owner, name)
-            prs = []
-            utc = pytz.UTC
-            lastmonth_date = (datetime.datetime.now() - datetime.timedelta(days=30)).replace(tzinfo=utc)
-            for pr in repo.pull_requests():
-                creation_date = pr.created_at.replace(tzinfo=utc)
-                if creation_date > lastmonth_date:
-                    prs.append(pr)
-                else:
-                    break
-            return prs
-        except (GitHubError, GitHubException) as e:
-            print("GITHUB ERROR")
-            if e.message:
-                print(e.message)
-
     def get_lastyear_prs(self, owner, name):
         try:
             repo = self.git.repository(owner, name)
-            prs = []
+            repo_obj = get_repo_by_name(owner, name)
             utc = pytz.UTC
             lastyear_date = (datetime.datetime.now() - datetime.timedelta(days=365)).replace(tzinfo=utc)
-            for pr in repo.pull_requests():
+            for pr in repo.pull_requests(state='all'):
                 creation_date = pr.created_at.replace(tzinfo=utc)
                 if creation_date > lastyear_date:
-                    prs.append(pr)
+                    if pr.merged_at:
+                        merged = True
+                    else:
+                        merged = False
+                    pr_add(repo_obj.id, pr.number, pr.created_at, pr.merged_at, pr.updated_at, pr.closed_at, merged)
                 else:
                     break
-            return prs
+            return True
         except (GitHubError, GitHubException) as e:
             print("GITHUB ERROR")
             if e.message:
                 print(e.message)
+            return False

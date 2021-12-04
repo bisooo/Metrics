@@ -7,6 +7,8 @@ from git.services.user import *
 from git.services.repo import *
 # UTILITY SERVICES
 from git.services.utlis import *
+# CELERY TASKS
+from git.tasks import lastyear_prs
 
 
 def watch_repo(request):
@@ -29,7 +31,7 @@ def watch_repo(request):
                         repo = add_repo(owner, name, repo.html_url)
                         user = get_user_by_username(request.user.username)
                         watchlist_add(user, repo)
-                        # git(token).get_lastweek_prs(owner, name)
+                        lastyear_prs.delay(token, owner, name)
                         context['already_exists'] = False
                     else:
                         context['already_exists'] = True

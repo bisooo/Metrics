@@ -8,6 +8,14 @@ def validate_url(url):
             except IndexError:
                 print("INDEX ERROR")
                 return None, None
+        elif url.find(".") == -1:
+            try:
+                owner = url.split('/')[0]
+                repo_name = url.split('/')[1]
+                return owner, repo_name
+            except IndexError:
+                print("INDEX ERROR")
+                return None, None
         else:
             try:
                 owner = url.split('/')[1]

@@ -30,8 +30,8 @@ class WatchListAdmin(ModelAdmin):
 
 # PULL REQUEST WAIT VIEW
 class PRWaitAdmin(ModelAdmin):
-    list_display = ('repo', 'number', 'created_at', 'merged_at', 'closed_at', 'merged')
-    search_fields = ('repo', 'number', 'created_at', 'merged_at', 'closed_at', 'merged')
+    list_display = ('repo', 'number', 'created_at', 'merged_at', 'updated_at', 'merged')
+    search_fields = ('repo', 'number', 'created_at', 'merged_at', 'updated_at', 'merged')
     readonly_fields = ('repo', 'number', 'created_at', 'merged_at', 'closed_at', 'updated_at', 'merged')
 
 

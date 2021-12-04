@@ -5,6 +5,8 @@ from git.services.git import GitWrapper as git
 from git.services.user import *
 # REPOSITORY SERVICES
 from git.services.repo import *
+# CELERY TASKS
+from git.tasks import lastyear_prs
 
 
 def my_repos(request):
@@ -32,6 +34,6 @@ def repo_add(request, owner, name):
     repo = add_repo(owner, name, git_url)
     user = get_user_by_username(request.user.username)
     watchlist_add(user, repo)
-    # git(request.user.token).get_lastweek_prs(owner, name)
+    lastyear_prs.delay(request.user.token, owner, name)
 
     return my_repos(request)

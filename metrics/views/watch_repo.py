@@ -29,7 +29,7 @@ def watch_repo(request):
                         repo = add_repo(owner, name, repo.html_url)
                         user = get_user_by_username(request.user.username)
                         watchlist_add(user, repo)
-                        # collect_yearly_prs(new_repo)
+                        # git(token).get_lastweek_prs(owner, name)
                         context['already_exists'] = False
                     else:
                         context['already_exists'] = True

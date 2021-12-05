@@ -5,6 +5,11 @@ from git.services.git import GitWrapper as git
 
 
 @shared_task
+def add(x, y):
+    return x+y
+
+
+@shared_task
 def lastyear_prs(token, owner, name):
     check = git(token).get_lastyear_prs(owner, name)
     if check:

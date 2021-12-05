@@ -45,6 +45,9 @@ INSTALLED_APPS = [
     'channels_redis',
     # GIT
     'git',
+    # CELERY
+    'django_celery_beat',
+    'django_celery_results',
 ]
 
 MIDDLEWARE = [
@@ -162,8 +165,26 @@ PLOTLY_COMPONENTS = [
 AUTH_USER_MODEL = 'git.User'
 
 # CELERY SETTINGS
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Europe/Prague'
+
 # HEROKU REDIS (MESSAGE BROKER)
 CELERY_BROKER_URL = config('REDIS_URL')
+CELERY_RESULT_BACKEND = 'django-db'
+
+# SCHEDULED TASKS
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+CELERY_BEAT_SCHEDULE = {
+    "add_every_2s": {
+        "task": "git.tasks.add",
+        "schedule": 10.0,
+        "args": (10, 11),
+    }
+}
+
+
 
 
 

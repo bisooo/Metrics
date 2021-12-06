@@ -5,7 +5,7 @@ from github3.exceptions import *
 import datetime
 import pytz
 # REPOSITORY SERVICES
-from .repo import get_repo_by_name, pr_add
+from .repo import get_repo_by_name, pr_add, get_lastweek_prs, pull_request_add
 
 
 class GitWrapper:
@@ -53,10 +53,35 @@ class GitWrapper:
                         merged = True
                     else:
                         merged = False
-                    pr_add(repo_obj.id, pr.number, pr.created_at, pr.merged_at, pr.updated_at, pr.closed_at, merged)
+                    pr_add(repo_obj.id, pr.number, pr.created_at,
+                           pr.merged_at, pr.updated_at, pr.closed_at, merged)
                 else:
                     break
             return True
+        except (GitHubError, GitHubException) as e:
+            print("GITHUB ERROR")
+            if e.message:
+                print(e.message)
+            return False
+
+    def get_lastweek_prs(self, owner, name):
+        try:
+            repo = get_repo_by_name(owner, name)
+            prs = get_lastweek_prs(owner, name)
+            utc = pytz.UTC
+            lastweek_date = (datetime.datetime.now() - datetime.timedelta(days=7)).replace(tzinfo=utc)
+            for pr in prs:
+                number = pr.number
+                pull_request = self.git.pull_request(owner, name, number)
+                created_at = pr.created_at
+                creation_date = pr.created_at.replace(tzinfo=utc)
+                if creation_date > lastweek_date:
+                    pull_request_add(repo.id, number, created_at, pull_request.additions_count,
+                                     pull_request.deletions_count, pull_request.commits_count,
+                                     pull_request.merged)
+                else:
+                    break
+            return prs
         except (GitHubError, GitHubException) as e:
             print("GITHUB ERROR")
             if e.message:

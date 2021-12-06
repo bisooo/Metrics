@@ -79,5 +79,25 @@ class PullRequestWait(models.Model):
     closed_at = models.DateTimeField(blank=True, null=True)
     merged = models.BooleanField()
 
+    class Meta:
+        unique_together = ["repo", "number"]
+
+    def __str__(self):
+        return self.repo.name + " #" + str(self.number)
+
+
+# PULL REQUEST MODEL
+class PullRequest(models.Model):
+    repo = models.ForeignKey(Repository, on_delete=models.CASCADE)
+    number = models.PositiveIntegerField()
+    created_at = models.DateTimeField()
+    additions = models.PositiveIntegerField()
+    deletions = models.PositiveIntegerField()
+    commits = models.PositiveIntegerField()
+    merged = models.BooleanField()
+
+    class Meta:
+        unique_together = ["repo", "number"]
+
     def __str__(self):
         return self.repo.name + " #" + str(self.number)

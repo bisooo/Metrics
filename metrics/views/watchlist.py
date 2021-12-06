@@ -16,7 +16,7 @@ def watchlist(request):
     if valid_token:
         context['valid_token'] = True
 
-    watchlist = get_repos_watched(request.user)
+    watchlist = get_users_watchlist(request.user)
     if watchlist:
         context['watchlist'] = watchlist
     else:

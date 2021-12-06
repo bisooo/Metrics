@@ -12,7 +12,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+# ENVIRONMENT VARIABLES
 from decouple import config
+# CRONTAB SCHEDULES
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -139,10 +142,10 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 ASGI_APPLICATION = 'thesis.routing.application'
 
 CHANNEL_LAYERS = {
-    'default' : {
-        'BACKEND' : 'channel_redis.core.RedisChannelLayer',
-        'CONFIG' : {
-            'hosts' : [('127.0.0.1', 6379),],
+    'default': {
+        'BACKEND': 'channel_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379), ],
         }
     }
 }
@@ -169,18 +172,19 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Europe/Prague'
+CELERY_RESULT_BACKEND = 'django-db'
 
 # HEROKU REDIS (MESSAGE BROKER)
 CELERY_BROKER_URL = config('REDIS_URL')
-CELERY_RESULT_BACKEND = 'django-db'
+CELERY_BROKER_POOL_LIMIT = 2
+
 
 # SCHEDULED TASKS
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 CELERY_BEAT_SCHEDULE = {
-    "add_every_2s": {
-        "task": "git.tasks.add",
-        "schedule": 10.0,
-        "args": (10, 11),
+    "update_prs_midnight": {
+        "task": "git.tasks.update_prs",
+        "schedule": crontab(hour=0, minute=0),
     }
 }
 

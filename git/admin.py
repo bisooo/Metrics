@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.admin import ModelAdmin
-from git.models import User, Repository, WatchList, PullRequestWait
+from git.models import User, Repository, WatchList, PullRequestWait, PullRequest
 
 
 # USER VIEW
@@ -35,8 +35,16 @@ class PRWaitAdmin(ModelAdmin):
     readonly_fields = ('repo', 'number', 'created_at', 'merged_at', 'closed_at', 'updated_at', 'merged')
 
 
+# PULL REQUEST VIEW
+class PRAdmin(ModelAdmin):
+    list_display = ('repo', 'number', 'created_at', 'additions', 'deletions', 'commits', 'merged')
+    search_fields = ('repo', 'number', 'created_at', 'additions', 'deletions', 'commits', 'merged')
+    readonly_fields = ('repo', 'number', 'created_at', 'additions', 'deletions', 'commits', 'merged')
+
+
 admin.site.register(User, AccountAdmin)
 admin.site.register(Repository, RepositoryAdmin)
 admin.site.register(WatchList, WatchListAdmin)
 admin.site.register(PullRequestWait, PRWaitAdmin)
+admin.site.register(PullRequest, PRAdmin)
 

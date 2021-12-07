@@ -7,6 +7,7 @@ from git.forms import RegistrationForm, LoginForm
 
 
 def register(request):
+
     context = {}
     if request.POST:
         form = RegistrationForm(request.POST)
@@ -27,6 +28,7 @@ def register(request):
 
 
 def login(request):
+
     context = {}
     if request.user.is_authenticated:
         return redirect('homepage')

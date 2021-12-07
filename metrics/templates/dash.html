@@ -14,12 +14,12 @@
                 <div class="card-body">
                     {% if valid_token %}
                         <div class="{% plotly_class name='example'%} card" style="height: 100%; width: 100%">
+                                <br>
+                                {% plotly_app name='example' ratio=0.65%}
+                            </div>
                             <br>
-                            {% plotly_app name='example' ratio=0.65%}
-                        </div>
-                        <br>
-                        <div class="card" style="height: 100%; width:100%">
-                            {{ scatter_plot | safe }}
+                            <div class="card" style="height: 100%; width:100%">
+                                {{ scatter_plot | safe }}
                         </div>
                     {% else %}
                         <br>

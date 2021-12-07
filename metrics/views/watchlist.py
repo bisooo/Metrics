@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 # REPOSITORY SERVICES
-from git.services.repo import *
+from git.services.repo import get_users_watchlist, get_repo_by_id, watchlist_remove
 # GITHUB API LIBRARY SERVICES
 from git.services.git import GitWrapper as git
 

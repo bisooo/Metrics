@@ -1,8 +1,9 @@
-import django.db
-
-from git.models import Repository, WatchList, PullRequestWait, PullRequest
+from django.http import HttpResponse
+# DJANGO DB
 from django.db import connection
-from django.db.utils import OperationalError
+from django.db.utils import OperationalError, IntegrityError
+# GIT MODELS
+from git.models import Repository, WatchList, PullRequestWait, PullRequest
 
 
 # REPOSITORY
@@ -14,8 +15,9 @@ def get_repo_by_name(owner, name):
     with connection.cursor():
         try:
             return Repository.objects.all().get(owner__iexact=owner, name__iexact=name)
-        except OperationalError:
-            print("DB OPERATIONAL ERROR")
+        except (OperationalError, IntegrityError):
+            print("DB ERROR")
+            return HttpResponse('DB ERROR')
 
 
 def add_repo(owner, name, url):
@@ -46,8 +48,12 @@ def watchlist_remove(user, repo):
 
 
 def watchlist_add(user, repo):
-    obj = WatchList(user_id=user.id, repo_id=repo.id)
-    obj.save()
+    try:
+        obj = WatchList(user_id=user.id, repo_id=repo.id)
+        obj.save()
+    except (OperationalError, IntegrityError):
+        print("DB ERROR")
+        return HttpResponse('DB ERROR')
 
 
 def repo_watched(user, owner, name):
@@ -73,32 +79,35 @@ def watched_user_repos(user, repos):
 
 
 # PULL REQUEST WAIT
-def get_lastweek_prs(owner, name):
+def get_lastweek_pr_waits(owner, name):
     with connection.cursor():
         try:
             prs = PullRequestWait.objects.all().filter(repo__owner=owner, repo__name=name)
             return prs
-        except OperationalError:
-            print("DB OPERATIONAL ERROR")
+        except (OperationalError, IntegrityError):
+            print("DB ERROR")
+            return HttpResponse('DB ERROR')
 
 
-def pr_add(repo, number, created_at, merged_at, updated_at, closed_at, merged):
+def pr_wait_add(repo, number, created_at, merged_at, updated_at, closed_at, merged):
     with connection.cursor():
         try:
             obj = PullRequestWait.objects.get_or_create(repo_id=repo, number=number, created_at=created_at,
                                                         merged_at=merged_at, updated_at=updated_at,
                                                         closed_at=closed_at, merged=merged)
             return obj
-        except OperationalError:
-            print("DB OPERATIONAL ERROR")
+        except (OperationalError, IntegrityError):
+            print("DB ERROR")
+            return HttpResponse('DB ERROR')
 
 
-def pull_request_add(repo, number, created_at, add, delete, commits, merged):
+def pr_add(repo, number, created_at, add, delete, commits, merged):
     with connection.cursor():
         try:
             obj = PullRequest.objects.get_or_create(repo_id=repo, number=number, created_at=created_at,
                                                     additions=add, deletions=delete, commits=commits,
                                                     merged=merged)
             return obj
-        except OperationalError:
-            print("DB OPERATIONAL ERROR")
+        except (OperationalError, IntegrityError):
+            print("DB ERROR")
+            return HttpResponse('DB ERROR')

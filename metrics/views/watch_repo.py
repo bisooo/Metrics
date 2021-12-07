@@ -2,13 +2,13 @@ from django.shortcuts import render, redirect
 # GIT API LIBRARY SERVICES
 from git.services.git import GitWrapper as git
 # USER SERVICES
-from git.services.user import *
+from git.services.user import get_user_by_username
 # REPOSITORY SERVICES
-from git.services.repo import *
+from git.services.repo import repo_watched, add_repo, watchlist_add
 # UTILITY SERVICES
-from git.services.utlis import *
+from git.services.utlis import validate_url
 # CELERY TASKS
-from git.tasks import lastyear_prs
+from git.tasks import lastyear_pr_waits
 
 
 def watch_repo(request):
@@ -31,7 +31,7 @@ def watch_repo(request):
                         repo = add_repo(owner, name, repo.html_url)
                         user = get_user_by_username(request.user.username)
                         watchlist_add(user, repo)
-                        lastyear_prs.delay(token, owner, name)
+                        lastyear_pr_waits.delay(token, owner, name)
                         context['already_exists'] = False
                     else:
                         context['already_exists'] = True

@@ -37,6 +37,10 @@ class User(AbstractBaseUser):
 
     objects = UserManager()
 
+    class Meta:
+        verbose_name = "USER"
+        verbose_name_plural = "USERs"
+
     def __str__(self):
         return self.username
 
@@ -55,6 +59,8 @@ class Repository(models.Model):
 
     class Meta:
         unique_together = ["owner", "name"]
+        verbose_name = "REPO"
+        verbose_name_plural = "REPOs"
 
     def __str__(self):
         return self.owner + "/" + self.name
@@ -64,6 +70,10 @@ class Repository(models.Model):
 class WatchList(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     repo = models.ForeignKey(Repository, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "WATCH LIST"
+        verbose_name_plural = "WATCH LISTs"
 
     def __str__(self):
         return self.user.username + " & " + self.repo.owner + "/" + self.repo.name
@@ -81,6 +91,8 @@ class PullRequestWait(models.Model):
 
     class Meta:
         unique_together = ["repo", "number"]
+        verbose_name = "PR WAIT"
+        verbose_name_plural = "PR WAITs"
 
     def __str__(self):
         return self.repo.name + " #" + str(self.number)
@@ -98,6 +110,8 @@ class PullRequest(models.Model):
 
     class Meta:
         unique_together = ["repo", "number"]
+        verbose_name = "PR"
+        verbose_name_plural = "PRs"
 
     def __str__(self):
         return self.repo.name + " #" + str(self.number)

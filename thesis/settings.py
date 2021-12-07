@@ -164,7 +164,7 @@ PLOTLY_COMPONENTS = [
     'dpd_components',
 ]
 
-# OVERRIDE CURRENT DJANGO BASE USER MODEL
+# OVERRIDE DJANGO BASE USER MODEL
 AUTH_USER_MODEL = 'git.User'
 
 # CELERY SETTINGS
@@ -182,7 +182,7 @@ CELERY_BROKER_POOL_LIMIT = 2
 # SCHEDULED TASKS
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 CELERY_BEAT_SCHEDULE = {
-    "update_prs_midnight": {
+    "update_prs@midnight": {
         "task": "git.tasks.update_prs",
         "schedule": crontab(hour=0, minute=0),
     }

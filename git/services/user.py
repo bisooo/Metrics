@@ -1,3 +1,4 @@
+# USER MODEL
 from git.models import User
 
 

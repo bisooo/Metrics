@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 # USER SERVICES LAYER
-from git.services.user import *
+from git.services.user import get_user_by_username, update_token
 # GIT API LIBRARY SERVICES
 from git.services.git import GitWrapper as git
 

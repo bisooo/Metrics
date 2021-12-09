@@ -41,16 +41,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # FORMS
     'crispy_forms',
-    # METRICS
-    'metrics',
+    # DASH PLOTLY
     'django_plotly_dash.apps.DjangoPlotlyDashConfig',
     'channels',
     'channels_redis',
-    # GIT
-    'git',
     # CELERY
     'django_celery_beat',
     'django_celery_results',
+    # METRICS
+    'metrics',
+    # GIT
+    'git',
 ]
 
 MIDDLEWARE = [

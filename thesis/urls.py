@@ -11,6 +11,7 @@ from metrics.views.flow import flow
 from metrics.views.my_repos import my_repos, repo_add
 from metrics.views.watch_repo import watch_repo
 from metrics.views.watchlist import watchlist, delete_repo
+from metrics.views.export import export
 # DASH PLOTLY
 from metrics.visuals import example
 
@@ -21,6 +22,7 @@ urlpatterns = [
     path('dash/', dashboard, name='dashboard'),
     path('lifeline/', lifeline, name='lifeline'),
     path('flow/', flow, name='flow'),
+    path('export/', export, name='export'),
     # REPOS & WATCHLIST
     path('repos/', my_repos, name='my_repos'),
     path('repos/<str:owner>/<str:name>', repo_add, name='repo_add'),

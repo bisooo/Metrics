@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
+# GITHUB API LIBRARY SERVICES
+from git.services.git import GitWrapper as git
 # PLOTLY
 from plotly.offline import plot
 import plotly.graph_objects as go
-# GITHUB API LIBRARY SERVICES
-from git.services.git import GitWrapper as git
 
 
 def dashboard(request):

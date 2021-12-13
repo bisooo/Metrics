@@ -20,16 +20,16 @@
           <p>DASHBOARD</p>
         </a>
       </li>
-      <li class="{% if 'typography' in segment %} active {% endif %}">
-          <a href="{% url 'lifeline' %}">
-              <i class="tim-icons icon-sound-wave"></i>
-              <p>" LIFELINE "</p>
-          </a>
-      </li>
       <li class="{% if 'notifications' in segment %} active {% endif %}">
         <a href="{% url 'flow' %}">
           <i class="tim-icons icon-atom"></i>
           <p>" FLOW "</p>
+        </a>
+      </li>
+      <li class="{% if 'typography' in segment %} active {% endif %}">
+        <a href="{% url 'lifeline' %}">
+            <i class="tim-icons icon-sound-wave"></i>
+            <p>" LIFELINE "</p>
         </a>
       </li>
       <li class="{% if 'icons' in segment %} active {% endif %}">

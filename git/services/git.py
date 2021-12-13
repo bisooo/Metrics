@@ -5,7 +5,9 @@ from github3.exceptions import GitHubError, GitHubException
 import datetime
 import pytz
 # REPOSITORY SERVICES
-from .repo import get_repo_by_name, pr_add, get_lastweek_pr_waits, pr_wait_add
+from .repo import get_repo_by_name
+# PR SERVICES
+from .prs import pr_add, get_lastweek_pr_waits, pr_wait_add
 
 
 class GitWrapper:
@@ -68,19 +70,13 @@ class GitWrapper:
         try:
             repo = get_repo_by_name(owner, name)
             prs = get_lastweek_pr_waits(owner, name)
-            utc = pytz.UTC
-            lastweek_date = (datetime.datetime.now() - datetime.timedelta(days=7)).replace(tzinfo=utc)
             for pr in prs:
                 number = pr.number
                 pull_request = self.git.pull_request(owner, name, number)
                 created_at = pr.created_at
-                creation_date = pr.created_at.replace(tzinfo=utc)
-                if creation_date > lastweek_date:
-                    pr_add(repo.id, number, created_at, pull_request.additions_count,
-                           pull_request.deletions_count, pull_request.commits_count,
-                           pull_request.merged)
-                else:
-                    break
+                pr_add(repo.id, number, created_at, pull_request.additions_count,
+                       pull_request.deletions_count, pull_request.commits_count,
+                       pull_request.merged)
             return True
         except (GitHubError, GitHubException) as e:
             print("GITHUB ERROR")

@@ -13,7 +13,7 @@ from metrics.views.watch_repo import watch_repo
 from metrics.views.watchlist import watchlist, delete_repo
 from metrics.views.export import export
 # DASH PLOTLY
-from metrics.visuals import example
+from metrics.visuals import yearly_pr_wait, monthly_pr_wait, pr
 
 urlpatterns = [
     # HOMEPAGE

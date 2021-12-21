@@ -10,6 +10,20 @@
 
     {% if valid_token %}
         {% if not no_repos %}
+            <form method="post">
+                {% csrf_token %}
+                <div class="container" style="width: 100%;">
+                    {% for i in watchlist %}
+                        <h5 style="display: inline-block">
+                            {% if selected_id == i.repo.id %}
+                                <button type="submit" name="repo_id" value="{{ i.repo.id }}" class="btn btn-sm btn-success">{{ i.repo.owner }} / {{ i.repo.name }}</button>
+                            {% else %}
+                                <button type="submit" name="repo_id" value="{{ i.repo.id }}" class="btn btn-sm btn-info">{{ i.repo.owner }} / {{ i.repo.name }}</button>
+                            {% endif %}
+                        </h5>
+                    {% endfor %}
+                </div>
+            </form>
             <div class="{% plotly_class name='yearly_pr_wait'%} card" style="height: 100%; width: 100%">
                 {% plotly_app name='yearly_pr_wait' ratio=0.65%}
             </div>

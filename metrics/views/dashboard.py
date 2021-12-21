@@ -17,7 +17,20 @@ def dashboard(request):
         context['valid_token'] = True
 
     watchlist = get_users_watchlist(request.user)
-    if not watchlist:
+    if watchlist:
+        context['watchlist'] = watchlist
+    else:
         context['no_repos'] = True
+
+    if request.method == "POST":
+        context['selected_id'] = int(request.POST['repo_id'])
+        try:
+            del request.session['django_plotly_dash']
+        except KeyError:
+            print("NEW USER SESSION")
+        session = request.session
+        repo = session.get('django_plotly_dash', {})
+        repo['repo_id'] = int(request.POST['repo_id'])
+        session['django_plotly_dash'] = repo
 
     return render(request, 'dash.html', context)

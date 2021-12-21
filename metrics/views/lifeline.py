@@ -24,7 +24,10 @@ def lifeline(request):
 
     if request.method == "POST":
         context['selected_id'] = int(request.POST['repo_id'])
-        del request.session['django_plotly_dash']
+        try:
+            del request.session['django_plotly_dash']
+        except KeyError:
+            print("NEW USER SESSION")
         session = request.session
         repo = session.get('django_plotly_dash', {})
         repo['repo_id'] = int(request.POST['repo_id'])

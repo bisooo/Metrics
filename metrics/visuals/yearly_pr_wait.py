@@ -1,8 +1,14 @@
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
-import plotly.graph_objs as go
+import plotly.express as px
 from django_plotly_dash import DjangoDash
+# PANDAS
+import pandas as pd
+# REPO SERVICES
+from git.services.repo import get_repo_by_id
+# PR SERVICES
+from git.services.prs import get_lastyear_pr_waits
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -35,16 +41,50 @@ app.layout = html.Div([
     [Input('select-goal', 'value')])
 def display_value(*args, **kwargs):
     goal = kwargs['callback_context'].inputs['select-goal.value']
-    print("SELECTED A GOAL OF " + str(goal) + " HOURS")
+    session = kwargs['session_state']
+    repo = get_repo_by_id(session['repo_id'])
 
-    x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-    y = [10, 20, 5, 40, 50, 60, 40, 30, 60, 100, 55, 80, 95]
-    graph = go.Scatter(x=x, y=y)
-    layout = go.Layout(
-        paper_bgcolor='#27293d',
-        plot_bgcolor='rgba(0,0,0,0)',
-        xaxis=dict(range=[min(x), max(x)], title="DAY"),
-        yaxis=dict(range=[min(y), max(y)], title="SUCCESS RATE ﹪"),
-        font=dict(color='white'),
+    prs = get_lastyear_pr_waits(repo.owner, repo.name)
+    df = pd.DataFrame(prs)
+    df['created_at'] = pd.to_datetime(df['created_at'])
+    df['merged_at'] = pd.to_datetime(df['merged_at'])
+    df = df.sort_values(by='created_at')
+
+    def merge_time(row):
+        if row['merged']:
+            diff = row['merged_at'] - row['created_at']
+            days = diff.days
+            hours, remainder = divmod(diff.seconds, 3600)
+            minutes, seconds = divmod(remainder, 60)
+            time = (days * 24) + hours + (minutes / 60)
+        else:
+            time = 0
+        return time
+
+    df['merge_time'] = df.apply(merge_time, axis=1)
+    pr_wait = pd.DataFrame()
+    for day in df.created_at.dt.date.unique():
+        # TOTAL NO. OF PRs MERGED ON THAT DAY
+        created_on_day = pd.to_datetime(df.created_at.dt.date) == str(day)
+        total_prs = df[(created_on_day) & (df.merged)].shape[0]
+        # TOTAL NO. OF PRs THAT WERE MERGED WITHIN THE GOAL TIME
+        success_prs = df[(created_on_day) & (df.merged) & (df.merge_time <= goal)].shape[0]
+        if total_prs != 0:
+            success_rate = (success_prs / total_prs) * 100
+        else:
+            success_rate = 0
+        pr_wait = pr_wait.append({'day': day, 'success': success_rate}, ignore_index=True)
+
+    # MOVING AVERAGE
+    window = 3
+    pr_wait['MA'] = pr_wait.success.rolling(window=window, center=True).mean()
+
+    fig = px.line(pr_wait, x="day", y="MA")
+    fig.update_layout(
+        template='plotly_dark',
+        xaxis_title="DAY",
+        yaxis_title="SUCCESS RATE",
+        xaxis_range=[min(pr_wait['day']), max(pr_wait['day'])],
+        yaxis_range=[0, 100]
     )
-    return {'data': [graph], 'layout': layout}
+    return fig
